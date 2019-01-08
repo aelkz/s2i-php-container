@@ -50,7 +50,7 @@ RUN yum install -y centos-release-scl && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
 
-RUN yum install -y mod_auth_openidc --nogpgcheck
+# RUN yum install -y mod_auth_openidc --nogpgcheck
 
 ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     APP_DATA=${APP_ROOT}/src \
