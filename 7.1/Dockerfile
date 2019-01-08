@@ -40,13 +40,11 @@ LABEL summary="${SUMMARY}" \
       usage="s2i build https://github.com/sclorg/s2i-php-container.git --context-dir=${PHP_VERSION}/test/test-app centos/${NAME}-${PHP_VER_SHORT}-centos7 sample-server" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
+RUN yum install -y rubygems && yum clean all -y
+RUN gem install asdf
+RUN yum install -y wget hiredis jansson && yum clean all -y
+
 # Install Apache httpd and PHP
-RUN yum install -y --setopt=tsflags=nodocs mod_auth_openidc --nogpgcheck
-
-RUN yum remove -y httpd httpd-tools
-
-# yum install httpd24 httpd24-tools
-
 RUN yum install -y centos-release-scl && \
     INSTALL_PKGS="rh-php71 rh-php71-php rh-php71-php-mysqlnd rh-php71-php-pgsql rh-php71-php-bcmath \
                   rh-php71-php-gd rh-php71-php-intl rh-php71-php-ldap rh-php71-php-mbstring rh-php71-php-pdo \
@@ -55,6 +53,19 @@ RUN yum install -y centos-release-scl && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
+
+ENV CJOSE_VERSION 0.6.1.3
+ENV CJOSE_PKG cjose-${CJOSE_VERSION}-1.el7.x86_64.rpm
+RUN wget https://mod-auth-openidc.org/download/${CJOSE_PKG}
+RUN yum localinstall -y ~/${CJOSE_PKG}
+
+# 2.3.10rc0
+ENV MOD_AUTH_OPENIDC_VERSION 2.3.7
+ENV MOD_AUTH_OPENIDC_PKG mod_auth_openidc-${MOD_AUTH_OPENIDC_VERSION}-1.el7.x86_64.rpm
+RUN wget https://mod-auth-openidc.org/download/${MOD_AUTH_OPENIDC_PKG}
+#RUN yum localinstall -y ~/${MOD_AUTH_OPENIDC_PKG} --skip-broken
+RUN rpm -iv ~/${MOD_AUTH_OPENIDC_PKG} --nodeps
+RUN ln -s /usr/lib64/httpd/modules/mod_auth_openidc.so /opt/rh/httpd24/root/etc/httpd/modules/mod_auth_openidc.so
 
 ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     APP_DATA=${APP_ROOT}/src \
@@ -72,6 +83,8 @@ ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
+
+COPY openidc.conf /opt/rh/httpd24/root/etc/httpd/conf.d
 
 # Copy extra files to the image.
 COPY ./root/ /
