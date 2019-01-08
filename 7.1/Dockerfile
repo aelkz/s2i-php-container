@@ -73,13 +73,14 @@ ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     PHP_SYSCONF_PATH=/etc/opt/rh/rh-php71 \
     PHP_HTTPD_CONF_FILE=rh-php71-php.conf \
     HTTPD_CONFIGURATION_PATH=${APP_ROOT}/etc/conf.d \
-    HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
     HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
     HTTPD_VAR_RUN=/var/run/httpd \
     HTTPD_DATA_PATH=/var/www \
     HTTPD_DATA_ORIG_PATH=/opt/rh/httpd24/root/var/www \
     HTTPD_VAR_PATH=/opt/rh/httpd24/root/var \
     SCL_ENABLED=rh-php71
+
+#HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
