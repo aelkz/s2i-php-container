@@ -50,6 +50,8 @@ RUN yum install -y centos-release-scl && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
 
+RUN yum install -y --setopt=tsflags=nodocs mod_auth_openidc mod24_ssl --nogpgcheck
+
 ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     APP_DATA=${APP_ROOT}/src \
     PHP_DEFAULT_INCLUDE_PATH=/opt/rh/rh-php71/root/usr/share/pear \
@@ -72,8 +74,6 @@ COPY ./root/ /
 
 # Reset permissions of filesystem to default values
 RUN /usr/libexec/container-setup && rpm-file-permissions
-
-RUN yum install -y mod_auth_openidc --nogpgcheck
 
 USER 1001
 
