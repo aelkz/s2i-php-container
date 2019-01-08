@@ -56,6 +56,7 @@ ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     PHP_SYSCONF_PATH=/etc/opt/rh/rh-php71 \
     PHP_HTTPD_CONF_FILE=rh-php71-php.conf \
     HTTPD_CONFIGURATION_PATH=${APP_ROOT}/etc/conf.d \
+    HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
     HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
     HTTPD_VAR_RUN=/var/run/httpd \
     HTTPD_DATA_PATH=/var/www \
