@@ -43,6 +43,10 @@ LABEL summary="${SUMMARY}" \
 # Install Apache httpd and PHP
 RUN yum install -y --setopt=tsflags=nodocs mod_auth_openidc --nogpgcheck
 
+RUN yum remove -y httpd httpd-tools
+
+# yum install httpd24 httpd24-tools
+
 RUN yum install -y centos-release-scl && \
     INSTALL_PKGS="rh-php71 rh-php71-php rh-php71-php-mysqlnd rh-php71-php-pgsql rh-php71-php-bcmath \
                   rh-php71-php-gd rh-php71-php-intl rh-php71-php-ldap rh-php71-php-mbstring rh-php71-php-pdo \
