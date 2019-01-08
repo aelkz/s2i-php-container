@@ -47,6 +47,7 @@ RUN yum install -y centos-release-scl && \
                   rh-php71-php-process rh-php71-php-soap rh-php71-php-opcache rh-php71-php-xml \
                   rh-php71-php-gmp rh-php71-php-pecl-apcu httpd24-mod_ssl" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
+    yum install -y mod_auth_openidc && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
 
