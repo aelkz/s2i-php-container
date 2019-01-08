@@ -41,6 +41,8 @@ LABEL summary="${SUMMARY}" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
 # Install Apache httpd and PHP
+RUN yum install -y --setopt=tsflags=nodocs mod_auth_openidc --nogpgcheck
+
 RUN yum install -y centos-release-scl && \
     INSTALL_PKGS="rh-php71 rh-php71-php rh-php71-php-mysqlnd rh-php71-php-pgsql rh-php71-php-bcmath \
                   rh-php71-php-gd rh-php71-php-intl rh-php71-php-ldap rh-php71-php-mbstring rh-php71-php-pdo \
@@ -49,8 +51,6 @@ RUN yum install -y centos-release-scl && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS --nogpgcheck && \
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
-
-RUN yum install -y --setopt=tsflags=nodocs mod_auth_openidc mod24_ssl --nogpgcheck
 
 ENV PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php/ \
     APP_DATA=${APP_ROOT}/src \
